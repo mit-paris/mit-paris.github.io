@@ -165,6 +165,14 @@ button.addEventListener('click', () => {
   ClearAllMarkers();
   search(strQuery);
 });
+document.addEventListener('keydown',function(e) {
+  if(e.which == 13) {
+    const strQuery = document.getElementById("search").value;
+    let marker = new google.maps.Marker();
+    ClearAllMarkers();
+    search(strQuery);
+  }
+});
 const getImageURL = (place) => {
   if(place.photos && place.photos[0]){
     return place.photos[0].getUrl();
