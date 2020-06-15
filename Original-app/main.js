@@ -22,12 +22,10 @@ const searchResult = new Vue({
   methods: {
     getUserListId:function(){
       const listId = localStorage.getItem("currentListId");
-      console.log(listId);
-    
+     
       if(listId === null){
         let uid = this.getUniqueStr();
         localStorage.setItem("currentListId",uid);
-        console.log(uid);
         return uid;
     
       }else{
@@ -57,20 +55,16 @@ const searchResult = new Vue({
         .database()
         .ref(`favorites/${currentListId}`)
         .orderByChild('createdAt');
-      console.log(localStorage.getItem("currentListId"));
       favoritesRef.off('child_removed');
       favoritesRef.off('child_added');
         
       favoritesRef.on('child_removed', (favSnapshot) => {
         const placeId = favSnapshot.key;
-        console.log(favSnapshot,'removeFav');
         this.$set(this.favorites, placeId, null);
       });
       favoritesRef.on('child_added', (favSnapshot) => {
         const placeId = favSnapshot.key;
         const place = favSnapshot.val();
-        console.log(favSnapshot,'addFav');
-        
         this.$set(this.favorites, placeId, place);
         this.favorites[placeId] = place;
       });
@@ -89,30 +83,19 @@ const placeDetails = new Vue({
   },
   watch: {
     place: function (newPlace, oldPlace) {
-      console.log("watcher");
-      console.log(newPlace);
       this.getDetails(newPlace.id);
     }    
   },
   methods: {
-    getDetails(placeId){
-      
+    getDetails(placeId){ 
       const vm = this;
-      
-      console.log("placeId:");
-      console.log(placeId);
       const request = {
         placeId: placeId,
         fields: ['name', 'address_components', 'international_phone_number','price_level', 'reviews','photos']
       };
       
       service.getDetails(request, function(results, status) {
-        
-        console.log(request,'request');
-        console.log("call for details");
-        console.log(results,status,'results');
-        if (status == google.maps.places.PlacesServiceStatus.OK) {
-          
+        if (status == google.maps.places.PlacesServiceStatus.OK) { 
           let author_name = 'No info';
           if(results.reviews){
             author_name = results.reviews[0].author_name;
@@ -122,14 +105,12 @@ const placeDetails = new Vue({
             review_text = results.reviews[0].text;
           }
           vm.details.reviewer = author_name;
-          
           vm.details = {
             name: results.name,
             international_phone_number: results.international_phone_number,
             price: results.price_level,
             reviewer: author_name,
             text: review_text,
-            
           };
           let photo = "";
           if(results.photos){
@@ -217,7 +198,6 @@ function createMarker(place) {
   });
   markers.push(marker);
   google.maps.event.addListener(marker, 'click', function() {
-    
     placeDetails.place = place;
     placeDetails.isShow = 'true';
     $('#details').removeClass('hide');
