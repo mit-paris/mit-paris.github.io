@@ -9,7 +9,6 @@ const searchResult = new Vue({
   el: '#search-result',
   data: {
     places: [],
-    //photos: [],
     place: [],
     favorites: {},
     isShow: true,
