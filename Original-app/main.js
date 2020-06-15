@@ -16,13 +16,12 @@ const searchResult = new Vue({
   created() {
     currentListId = this.getUserListId();
     $('#togo-link').attr('href',`togo-list.html#${currentListId}`);
-    
     this.fetchFromFirebase();
   },
   methods: {
     getUserListId:function(){
       const listId = localStorage.getItem("currentListId");
-     
+   
       if(listId === null){
         let uid = this.getUniqueStr();
         localStorage.setItem("currentListId",uid);
@@ -38,8 +37,7 @@ const searchResult = new Vue({
       return new Date().getTime().toString(16)  + Math.floor(strong*Math.random()).toString(16);
     },
     regStar:function(place, event){
-      console.log('event', event);
-      console.log(this.favorites);
+     
       if(this.favorites[place.id]){
         removeTogo(place);
         const target = $(event.target);
